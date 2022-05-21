@@ -26,11 +26,11 @@ const Lines=({navigation, route})=>{
                const turno = {
                 idService: service._id,
                 prefix:item.prefix,
-                name: route.params.nameUser,
-                idNit: service.idNit
+                name: route.params.userName,
+                idNit: service.idNit,
+                nameLine: item.name,
+                ...route.params
                }; 
-            
-              console.log("Turno: ", turno);
               navigation.navigate("Place", turno);  
           }
 

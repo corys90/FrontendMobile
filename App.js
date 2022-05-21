@@ -2,15 +2,10 @@ import {React, useEffect} from "react";
 import { StyleSheet, View } from 'react-native';
 import MyStack from "./pages/MyStack";
 
-import { Provider } from "react-redux";
-import Store from "./store";
-
 export default function App() {
   return (
     <>
-        <Provider store={Store}>
           <MyStack />
-        </Provider>
     </>
   );
 }

@@ -27,7 +27,6 @@ const Principal=({navigation, route})=>{
 
     const onOptionEntitySelected = (pp) => {
 
-      setEntitySelected(pp);
       setLocation({
         latitude: pp.lonx,
         longitude: pp.laty,
@@ -35,8 +34,11 @@ const Principal=({navigation, route})=>{
         longitudeDelta: 0.005
       });
       setModalVisible(!modalVisible);
+      console.log("Parametros: ", route.params);
+      console.log("Selection entity: ", pp);
       setEntitySelected(pp);
     }
+
     return (
       <View style={styles.container} >
         <TouchableOpacity 
@@ -55,9 +57,9 @@ const Principal=({navigation, route})=>{
     }else{
       const parametros = {
         ...entitySelected,
-        nameUser:route.params.nameUser,
-        emailUser:route.params.emailUser
+        ...route.params
       }
+      console.log(" De Entity -> Lines: ", parametros);
       navigation.navigate("Lines", parametros);      
     }
   }

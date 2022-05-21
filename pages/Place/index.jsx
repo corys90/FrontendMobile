@@ -1,6 +1,7 @@
 import React, { useEffect, useState }  from 'react';
 import { View, TextInput, StyleSheet, Pressable, 
   Text, Button, Alert, ScrollView, FlatList, Modal, TouchableOpacity  } from 'react-native';
+import { Router } from 'react-router-dom';
 
 const Place=({navigation, route})=>{
 
@@ -20,12 +21,36 @@ const Place=({navigation, route})=>{
         .then((res) => res.json())
         .then((json) => {
             setData(json);
-            console.log("Recibido: ", json);
+            delete route.params._id;
+            delete route.params.__v;
+            const turno = {
+              idNit: route.params.idNit,
+              idService:route.params.idService,
+              nameEntity: route.params.name,
+              description: route.params.description,
+              prefix:route.params.prefix,
+              placeNo: json.turno.data.placeNo,
+              date:json.turno.data.date,
+              state:0,
+              laty: route.params.laty,
+              lonx: route.params.lonx,
+              address: route.params.address,
+              nameLine:route.params.nameLine
+            };
+            route.params.place.push(turno);
+            const UserInformation = {
+              userName : route.params.userName,
+              userEmail: route.params.userEmail,
+              place:route.params.place
+            }
+/*             UserInformation.place.forEach((item)=>{
+              console.log("Turnos solicitados: ", item);
+            }) */
+            console.log("Turno confirmado.place: ", UserInformation);
             return json;
         });
       }
 
-    console.log("Paramteros: ", route.params);
     getPlaceApi(route.params);
   }, []);
 

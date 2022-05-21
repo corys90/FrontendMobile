@@ -7,18 +7,25 @@ const Register=({navigation})=>{
     const [name, onChangeName] = React.useState("");
     const [email, onChangeEmail] = React.useState("");
 
+    const UserInformation = {
+      userName: "",
+      userEmail: "",
+      place:[]
+    };
+    
+
 const onButtonClick = () => {
 
-    const datosRegistro = {
-        nameUser: 'Corys90',
-        emailUser: 'Corys90@hotmail.com'
+    const UserInformation = {
+      userName: 'Corys90',
+      userEmail: 'Corys90@hotmail.com',
+      place:[]
     };
 
-    if ((datosRegistro.nameUser.trim() === "") || (datosRegistro.emailUser.trim() === "")){
+    if ((UserInformation.userName.trim() === "") || (UserInformation.userEmail.trim() === "")){
       Alert.alert("Se requieren un nombre y un correo electrónico");
     }else{
-      //Alert.alert(datosRegistro.name + "\n" + datosRegistro.email);
-      navigation.navigate("Entities", datosRegistro);
+      navigation.navigate("Entities", UserInformation);
     }
 }
 
