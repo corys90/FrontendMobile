@@ -6,8 +6,9 @@ import { Router } from 'react-router-dom';
 const Place=({navigation, route})=>{
 
   const [data, setData] = useState(); 
-  const [service, setService] = useState(); 
 
+  console.log("lo que viene de param.turno.place: ", route.params.turno.place);
+  
   useEffect(() => {
       async function getPlaceApi(parm) {
           const options = {
@@ -16,63 +17,53 @@ const Place=({navigation, route})=>{
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(parm)
-        }
-        await fetch('http://192.168.0.32:65535/api/line/', options)
-        .then((res) => res.json())
-        .then((json) => {
-            setData(json);
-            delete route.params._id;
-            delete route.params.__v;
-            const turno = {
-              idNit: route.params.idNit,
-              idService:route.params.idService,
-              nameEntity: route.params.name,
-              description: route.params.description,
-              prefix:route.params.prefix,
-              placeNo: json.turno.data.placeNo,
-              date:json.turno.data.date,
-              state:0,
-              laty: route.params.laty,
-              lonx: route.params.lonx,
-              address: route.params.address,
-              nameLine:route.params.nameLine
-            };
-            route.params.place.push(turno);
-            const UserInformation = {
-              userName : route.params.userName,
-              userEmail: route.params.userEmail,
-              place:route.params.place
+         }
+         await fetch('http://192.168.0.32:65535/api/line/', options)
+         .then((res) => res.json())
+         .then((json) => {
+            if (json.turno.status === 201){
+                const turno = {
+                  idNit: route.params.turno.idNit,
+                  idService:route.params.turno.idService,
+                  nameEntity: route.params.turno.name,
+                  description: route.params.turno.description,
+                  prefix:route.params.turno.prefix,
+                  placeNo: json.turno.data.placeNo,
+                  date:json.turno.data.date,
+                  state:0,
+                  laty: route.params.turno.laty,
+                  lonx: route.params.turno.lonx,
+                  address: route.params.turno.address,
+                  nameLine:route.params.turno.nameLine
+                };
+                route.params.turno.place.push(turno);
             }
-/*             UserInformation.place.forEach((item)=>{
-              console.log("Turnos solicitados: ", item);
-            }) */
-            console.log("Turno confirmado.place: ", UserInformation);
+            const UserInformation = {
+              userName : route.params.turno.userName,
+              userEmail: route.params.turno.userEmail,
+              place:route.params.turno.place
+            }
+            delete UserInformation._id;
+            delete UserInformation.__v;
+            console.log("De UseEffect: ",UserInformation.place);
+            setData(UserInformation.place);
             return json;
         });
       }
+      // 1 = Screen requerido por botton ve turnos, 0 = Toma un turno a la fila
+/*       if (route.params.origin === 0){ */
+        getPlaceApi(route.params.turno);
+/*       }else{
+        setData(UserInformation.place);
+      } */
 
-    getPlaceApi(route.params);
   }, []);
 
   const Card = ({item}) => {
-
-/*     const onPressOpacity = () => {
-         const turno = {
-          idService: service._id,
-          prefix:item.prefix,
-          name: route.params.nameUser,
-          idNit: service.idNit
-         }; 
-      
-        console.log("Turno: ", turno);
-        navigation.navigate("Place", turno);  
-    } */
-
   return (
     <View >
       <TouchableOpacity 
          style={styles.card}
-        onPress={onPressOpacity}
         >
         <View style={{backgroundColor:'#FD5D5D', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
             <Text style={styles.textoCard} >{item.name}</Text>
@@ -85,7 +76,6 @@ const Place=({navigation, route})=>{
     </View>
   );
 };
-
 
 return(
     <View style={styles.container}>

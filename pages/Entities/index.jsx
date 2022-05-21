@@ -34,8 +34,6 @@ const Principal=({navigation, route})=>{
         longitudeDelta: 0.005
       });
       setModalVisible(!modalVisible);
-      console.log("Parametros: ", route.params);
-      console.log("Selection entity: ", pp);
       setEntitySelected(pp);
     }
 
@@ -59,7 +57,6 @@ const Principal=({navigation, route})=>{
         ...entitySelected,
         ...route.params
       }
-      console.log(" De Entity -> Lines: ", parametros);
       navigation.navigate("Lines", parametros);      
     }
   }

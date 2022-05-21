@@ -31,7 +31,8 @@ const Lines=({navigation, route})=>{
                 nameLine: item.name,
                 ...route.params
                }; 
-              navigation.navigate("Place", turno);  
+               const origin = 10;
+               navigation.navigate("Place", {turno, origin});  
           }
 
         return (
