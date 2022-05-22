@@ -38,7 +38,7 @@ const Principal=({navigation, route})=>{
     }
 
     return (
-      <View style={styles.container} >
+      <View >
         <TouchableOpacity 
           onPress={()=>{onOptionEntitySelected(props)}}
           >
@@ -61,10 +61,24 @@ const Principal=({navigation, route})=>{
     }
   }
 
+  const onButtonClickVer = () => {
+
+    if (route.params.place.length > 0){
+      const parametros = {
+        orign:1,
+        turno:route.params
+      }
+      navigation.navigate("Place", parametros);  
+    }else{
+      Alert.alert("No tiene turnos tomados.");
+    } 
+  }
+
+  
+
 return(
     <View style={styles.container}>
-        <View style={{height: 50}}>
-        </View>
+
         {
           // zona de sección
         }
@@ -82,8 +96,7 @@ return(
         {
           // zona de sección
         }
-        <View style={{height: 50}}>
-        </View>
+
         {
           // zona de sección
         }
@@ -107,8 +120,6 @@ return(
         {
           // zona de sección
         }
-        <View style={{height: 50}}>
-        </View>
         {
           // Zona de ventana modal
         }
@@ -117,6 +128,19 @@ return(
                             color="#2b2d42"
                             title="Continuar"
                             onPress={onButtonClick}
+                    />                   
+        </View>
+        {
+          // zona de sección
+        }
+        {
+          // Zona de ventana modal
+        }
+        <View style={styles.button} >
+                    <Button
+                            color="#2b2d42"
+                            title="Ver mis turnos "
+                            onPress={onButtonClickVer}
                     />                   
         </View>
         {
@@ -145,6 +169,8 @@ return(
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      alignItems: 'center',
+      justifyContent:'space-evenly',
       width: "100%",
       alignContent: 'center',
       backgroundColor: '#FD5D5D'

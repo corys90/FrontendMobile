@@ -1,5 +1,6 @@
 import React, { useEffect, useState }  from 'react';
-import { View, StyleSheet, Alert, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, FlatList, Text, TouchableOpacity, Button, Alert } from 'react-native';
+import busto from "../../assets/busto.png";
 
 const Lines=({navigation, route})=>{
     
@@ -31,32 +32,75 @@ const Lines=({navigation, route})=>{
                 nameLine: item.name,
                 ...route.params
                }; 
-               const origin = 10;
+               const origin = 0;
                navigation.navigate("Place", {turno, origin});  
           }
 
+      console.log(item);
+
         return (
-          <View >
-            <TouchableOpacity 
-               style={styles.card}
-              onPress={onPressOpacity}
-              >
+          <View style={styles.card} >
               <View style={{backgroundColor:'#FD5D5D', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
-                  <Text style={styles.textoCard} >{item.name}</Text>
+                  <Text style={styles.textoCard} >{item.name} ({item.prefix})</Text>
               </View>
-              <View><Text style={styles.textoCard}  >Prefijo {item.prefix}</Text></View>
-              <View><Text style={styles.textoCard}  >Atendido por {item.nAttenders} persona(s)</Text></View>
-              <View><Text style={styles.textoCard}  >Turno atendido (pendiente)</Text></View>
-              <View><Text style={styles.textoCard}  >Turnos en espera (pendiente)</Text></View>
+              <View style={{height: 22}}></View>
+              <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',justifyContent: 'center'}}>
+                    <View>
+                        <Image style={styles.tinyLogo}  source={busto} resizeMode="stretch" />
+                    </View>
+              <View>
+                    <Text style={styles.textoCard}  >+ {item.nAttenders}</Text>
+              </View>
+              </View>
+              <View style={{height: 22}}></View>
+              <TouchableOpacity 
+               style={styles.card}
+               onPress={onPressOpacity}
+              >
+                    <View style={{backgroundColor:'#F55353', 
+                                  borderRadius: 6, 
+                                  height : 45,
+                                  justifyContent: 'center'
+                                  }}>
+                        <Text style={styles.textoCard} >Pulse aquí para tomar un turno</Text>
+                    </View>
             </TouchableOpacity>
           </View>
         );
     };
 
+    const onButtonClickVer = () => {
+
+      if (route.params.place.length > 0){
+        const parametros = {
+          orign:1,
+          turno:route.params
+        }
+        navigation.navigate("Place", parametros);  
+      }else{
+        Alert.alert("No tiene turnos tomados.");
+      } 
+    }
+
   return(
-      <View >
-           <FlatList  data={data}  renderItem ={Card} />
+      <View style={styles.container}>
+            <FlatList  data={data}  renderItem ={Card} />
+           <View style={{height: 20}}>
+            </View>
+            {
+              // Zona de ventana modal
+            }
+            <View style={styles.button} >
+                        <Button
+                                color="#2b2d42"
+                                title="Ver mis turnos "
+                                onPress={onButtonClickVer}
+                        />                   
+            </View>
+            <View style={{height: 20}}>
+            </View>
       </View>
+
   )
 };
 
@@ -68,11 +112,11 @@ const styles = StyleSheet.create({
       width: "100%"
     },
     card:{
-        height: 200,
+        flex: 1,
         borderWidth: 1,
         borderColor: 'white',
         backgroundColor: '#2b2d42',
-        padding: 5,
+        padding: 15,
         borderRadius: 10,
         margin: 3
     },
@@ -91,6 +135,19 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 32,
     },    
+    tinyLogo:{
+      width: 40,
+      height: 40,
+  },
+      button: {
+      borderWidth: 10,
+      backgroundColor: "#2b2d42",
+      borderColor: "#2b2d42",
+      width: "100%",
+      padding: 2,
+      margin: "auto",
+      borderRadius: 10,
+    }
   });
 
 export default Lines;
