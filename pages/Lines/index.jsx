@@ -36,8 +36,6 @@ const Lines=({navigation, route})=>{
                navigation.navigate("Place", {turno, origin});  
           }
 
-      console.log(item);
-
         return (
           <View style={styles.card} >
               <View style={{backgroundColor:'#FD5D5D', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
@@ -73,7 +71,7 @@ const Lines=({navigation, route})=>{
 
       if (route.params.place.length > 0){
         const parametros = {
-          orign:1,
+          orign:0,
           turno:route.params
         }
         navigation.navigate("Place", parametros);  

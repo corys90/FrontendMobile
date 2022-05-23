@@ -15,7 +15,7 @@ const MyStack = () => {
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
             <Stack.Screen name="Entities" component={Entities} options={{ title: 'Entidades', headerShown: true}} /> 
             <Stack.Screen name="Lines" component={Lines} options={{ title: 'Colas', headerShown: true}} /> 
-            <Stack.Screen name="Place" component={Place} options={{ title: 'Turno', headerShown: true}} /> 
+            <Stack.Screen name="Place" component={Place} options={{ title: 'Place', headerShown: true}} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
