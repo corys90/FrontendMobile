@@ -61,7 +61,7 @@ const Lines=({navigation, route})=>{
         return (
           <View>
                   <View style={styles.card} >
-                      <View style={{backgroundColor:'#FD5D5D', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
+                      <View style={{backgroundColor:'#8d99ae', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
                           <Text style={styles.textoCard} >{item.name} ({item.prefix})</Text>
                       </View>
                       <View style={{height: 22}}></View>
@@ -95,7 +95,7 @@ const Lines=({navigation, route})=>{
   return(
       <View style={styles.container}>
             <FlatList  data={data}  renderItem ={Card} />
-           <View style={{height: 20}}>
+            <View style={{height: 20}}>
             </View>
             {
               // Zona de ventana modal

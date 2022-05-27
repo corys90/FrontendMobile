@@ -157,7 +157,7 @@ const Tarjeta = ({item, onClickCeder, onClickDelete, datas, token}) =>{
   return (
       <View>
         <View style={estado === 0 ? styles.card : ( estado ===1 ? styles.card2: styles.card3)} >
-            <View style={{backgroundColor:'#FD5D5D', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
+            <View style={{backgroundColor:'#8d99ae', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
                 <Text style={styles.textoCard} >{item.nameEntity}</Text>
             </View>
             <View><Text style={styles.textoCard}  > {item.nameLine}</Text></View>

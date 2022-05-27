@@ -2,18 +2,14 @@ import React from 'react';
 import { View, TextInput, StyleSheet, SafeAreaView, Text, Button, Alert, Image } from 'react-native';
 import logo from "../../assets/logo5.png";
 import UriBack from "../../config";
+import validator from 'validator';
 
 const Register=({navigation})=>{
     
     const [name, onChangeName] = React.useState("");
     const [email, onChangeEmail] = React.useState("");
 
-    const UserInformation = {
-      userName: "Corys90",
-      userEmail: "Corys90@hotmail.com",
-      place:[]
-    };
-    
+   
   const onButtonClick = () => {
 
     async function  getAuth(body){
@@ -37,8 +33,14 @@ const Register=({navigation})=>{
 
     }
 
-    if ((UserInformation.userName.trim() === "") || (UserInformation.userEmail.trim() === "")){
-      Alert.alert("Se requieren un nombre y un correo electrónico");
+    const UserInformation = {
+      userName: name,
+      userEmail: email,
+      place:[]
+    };
+
+    if ((UserInformation.userName.trim() === "") || (UserInformation.userEmail.trim() === "") || (!validator.isEmail(email))){
+      Alert.alert("Se requieren un nombre y un correo electrónico válido");
     }else{
       // enviar para obtenere un token antes de redireccionar a Entities
       const body = {

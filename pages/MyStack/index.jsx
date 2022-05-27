@@ -14,8 +14,8 @@ const MyStack = () => {
       <Stack.Navigator>
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
             <Stack.Screen name="Entities" component={Entities} options={{ title: 'Entidades', headerShown: true}} /> 
-            <Stack.Screen name="Lines" component={Lines} options={{ title: 'Colas', headerShown: true}} /> 
-            <Stack.Screen name="Place" component={Place} options={{ title: 'Place', headerShown: true}} /> 
+            <Stack.Screen name="Lines" component={Lines} options={{ title: 'Filas', headerShown: true}} /> 
+            <Stack.Screen name="Place" component={Place} options={{ title: 'Turnos', headerShown: true}} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );
