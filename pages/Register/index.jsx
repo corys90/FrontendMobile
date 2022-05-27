@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, SafeAreaView, Text, Button, Alert, Image } from 'react-native';
 import logo from "../../assets/logo5.png";
+import UriBack from "../../config";
 
 const Register=({navigation})=>{
     
@@ -8,24 +9,43 @@ const Register=({navigation})=>{
     const [email, onChangeEmail] = React.useState("");
 
     const UserInformation = {
-      userName: "",
-      userEmail: "",
+      userName: "Corys90",
+      userEmail: "Corys90@hotmail.com",
       place:[]
     };
     
+  const onButtonClick = () => {
 
-const onButtonClick = () => {
+    async function  getAuth(body){
+      
+          await fetch(`${UriBack}/login`, {
+            method: 'POST',
+            headers:{
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+          })
+          .then((res) => res.json())
+          .then((json) => {
+            const ParamUserInformation = {
+              ...UserInformation,
+              token : json.token,
+            };
+            navigation.navigate("Entities", ParamUserInformation);
+            return json;
+          });
 
-    const UserInformation = {
-      userName: 'Corys90',
-      userEmail: 'Corys90@hotmail.com',
-      place:[]
-    };
+    }
 
     if ((UserInformation.userName.trim() === "") || (UserInformation.userEmail.trim() === "")){
       Alert.alert("Se requieren un nombre y un correo electrónico");
     }else{
-      navigation.navigate("Entities", UserInformation);
+      // enviar para obtenere un token antes de redireccionar a Entities
+      const body = {
+        userName: UserInformation.userName.trim(),
+        userEmail: UserInformation.userEmail.trim()
+      };
+      const tk = getAuth(body);
     }
 }
 

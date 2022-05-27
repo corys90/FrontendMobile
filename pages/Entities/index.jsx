@@ -1,17 +1,30 @@
 import React, { useEffect, useState }  from 'react';
 import { View, TextInput, StyleSheet, Pressable, 
   Text, Button, Alert, ScrollView, FlatList, Modal, TouchableOpacity  } from 'react-native';
-import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE, Marker, Polyline} from 'react-native-maps';
+import UriBack from "../../config";
 
 const Principal=({navigation, route})=>{
 
   const [data, setData] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [entitySelected, setEntitySelected] = useState("");
-  const [location, setLocation] = useState({lonx: 10.406858, laty:-75.515108, latitudeDelta: 0.002, longitudeDelta: 0.002});
+  const [origin, setOrigin] = useState(
+    {latitude: 10.423394, 
+      longitude:-75.548792,
+      latitudeDelta: 0.03,
+      longitudeDelta: 0.03
+    });
 
   async function getEntitiesApi() {
-      await fetch("http://192.168.0.32:65535/api/entities/")
+      
+      await fetch(`${UriBack}/api/entities/`, {
+        method:'GET',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${route.params.token}`
+        }
+      })
         .then((res) => res.json())
         .then((json) => {
           setData(json);
@@ -27,13 +40,14 @@ const Principal=({navigation, route})=>{
 
     const onOptionEntitySelected = (pp) => {
 
-      setLocation({
-        latitude: pp.lonx,
-        longitude: pp.laty,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005
-      });
       setModalVisible(!modalVisible);
+      const corrd = {
+        latitude: pp.laty,
+        longitude: pp.lonx,
+        latitudeDelta: 0.03,
+        longitudeDelta: 0.03
+      }
+      setOrigin(corrd);
       setEntitySelected(pp);
     }
 
@@ -65,7 +79,7 @@ const Principal=({navigation, route})=>{
 
     if (route.params.place.length > 0){
       const parametros = {
-        orign:1,
+        origin:1,
         turno:route.params
       }
       navigation.navigate("Place", parametros);  
@@ -73,8 +87,6 @@ const Principal=({navigation, route})=>{
       Alert.alert("No tiene turnos tomados.");
     } 
   }
-
-  
 
 return(
     <View style={styles.container}>
@@ -103,18 +115,34 @@ return(
         <View style={styles.infoEntity}>
               <Text style={styles.texto_infoEntity}>{entitySelected.description}</Text>
               <Text style={styles.texto_infoEntity}>{entitySelected.address}</Text>
-              <Text style={styles.texto_infoEntity}>{entitySelected.idNit}</Text>
+              <Text style={styles.texto_infoEntity}>{entitySelected.phone}</Text>
         </View>
         {
           // zona de mapas
         }
         <View style={styles.map}>
             <MapView
-               style={{width: '100%', height: '100%'}}
+              style={{width: '100%', height: '100%'}}
               provider={PROVIDER_GOOGLE}
               mapType='hybrid'
+              initialRegion={{
+                longitude: origin.longitude,
+                latitude: origin.latitude,
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.03
+              }}
+              region={
+                {
+                  longitude: origin.longitude, 
+                  latitude: origin.latitude,                 
+                  latitudeDelta: 0.0092,
+                  longitudeDelta: 0.0092
+                }
+              }
             >
-
+              <Marker 
+                coordinate={origin}
+              />
             </MapView>
         </View>
         {

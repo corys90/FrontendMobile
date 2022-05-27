@@ -1,6 +1,7 @@
 import React, { useEffect, useState }  from 'react';
 import { View, StyleSheet, Image, FlatList, Text, TouchableOpacity, Button, Alert } from 'react-native';
 import busto from "../../assets/busto.png";
+import UriBack from "../../config";
 
 const Lines=({navigation, route})=>{
     
@@ -8,21 +9,42 @@ const Lines=({navigation, route})=>{
     const [service, setService] = useState(); 
 
    useEffect(() => { 
-
         async function getLinesApi() {
-          await fetch(`http://192.168.0.32:65535/api/services/${route.params.idNit}`)
+          await fetch(`${UriBack}/api/services/${route.params.idNit}`,{
+              method:'GET',
+              headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${route.params.token}`
+              }
+          })
             .then((res) => res.json())
             .then((json) => {
-              setData(json[0].lines);
-              setService(json[0]);
-              return (json[0].lines);
+              if (!json){
+                Alert.alert("No hay servicios disponibles para la entidad seleccionada.");
+              }else{
+                setData(json[0].lines);
+                setService(json[0]);
+                return (json[0].lines);
+              }
             });
         } 
         getLinesApi();
     },[]);
+ 
+    const onButtonClickVer = () => {
+
+      if (route.params.place.length > 0){
+        const parametros = {
+          origin:1,
+          turno:route.params
+        }
+        navigation.navigate("Place", parametros);  
+      }else{
+        Alert.alert("No tiene turnos tomados.");
+      } 
+    }
 
     const Card = ({item}) => {
-
           const onPressOpacity = () => {
                const turno = {
                 idService: service._id,
@@ -37,48 +59,38 @@ const Lines=({navigation, route})=>{
           }
 
         return (
-          <View style={styles.card} >
-              <View style={{backgroundColor:'#FD5D5D', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
-                  <Text style={styles.textoCard} >{item.name} ({item.prefix})</Text>
-              </View>
-              <View style={{height: 22}}></View>
-              <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',justifyContent: 'center'}}>
-                    <View>
-                        <Image style={styles.tinyLogo}  source={busto} resizeMode="stretch" />
-                    </View>
-              <View>
-                    <Text style={styles.textoCard}  >+ {item.nAttenders}</Text>
-              </View>
-              </View>
-              <View style={{height: 22}}></View>
-              <TouchableOpacity 
-               style={styles.card}
-               onPress={onPressOpacity}
-              >
-                    <View style={{backgroundColor:'#F55353', 
-                                  borderRadius: 6, 
-                                  height : 45,
-                                  justifyContent: 'center'
-                                  }}>
-                        <Text style={styles.textoCard} >Pulse aquí para tomar un turno</Text>
-                    </View>
-            </TouchableOpacity>
+          <View>
+                  <View style={styles.card} >
+                      <View style={{backgroundColor:'#FD5D5D', borderTopLeftRadius: 6, borderTopRightRadius:6}}>
+                          <Text style={styles.textoCard} >{item.name} ({item.prefix})</Text>
+                      </View>
+                      <View style={{height: 22}}></View>
+                      <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',justifyContent: 'center'}}>
+                            <View>
+                                <Image style={styles.tinyLogo}  source={busto} resizeMode="stretch" />
+                            </View>
+                      <View>
+                            <Text style={styles.textoCard}  >+ {item.nAttenders}</Text>
+                      </View>
+                      </View>
+                      <View style={{height: 22}}></View>
+                      <TouchableOpacity 
+                      style={styles.card}
+                      onPress={onPressOpacity}
+                      >
+                            <View style={{backgroundColor:'#F55353', 
+                                          borderRadius: 6, 
+                                          height : 45,
+                                          justifyContent: 'center'
+                                          }}>
+                                <Text style={styles.textoCard} >Pulse aquí para tomar un turno</Text>
+                            </View>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{height:20}}></View>
           </View>
         );
     };
-
-    const onButtonClickVer = () => {
-
-      if (route.params.place.length > 0){
-        const parametros = {
-          orign:0,
-          turno:route.params
-        }
-        navigation.navigate("Place", parametros);  
-      }else{
-        Alert.alert("No tiene turnos tomados.");
-      } 
-    }
 
   return(
       <View style={styles.container}>
@@ -91,14 +103,13 @@ const Lines=({navigation, route})=>{
             <View style={styles.button} >
                         <Button
                                 color="#2b2d42"
-                                title="Ver mis turnos "
+                                title="Ver mis turnos"
                                 onPress={onButtonClickVer}
                         />                   
             </View>
             <View style={{height: 20}}>
             </View>
       </View>
-
   )
 };
 
@@ -106,7 +117,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: "center",
-      backgroundColor: 'red', //'#FD5D5D',
+      backgroundColor: '#FD5D5D', //'#FD5D5D',
       width: "100%"
     },
     card:{
