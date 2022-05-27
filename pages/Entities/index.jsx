@@ -90,7 +90,6 @@ const Principal=({navigation, route})=>{
 
 return(
     <View style={styles.container}>
-
         {
           // zona de sección
         }
@@ -105,10 +104,6 @@ return(
               </TouchableOpacity >
             </View>
         </View>
-        {
-          // zona de sección
-        }
-
         {
           // zona de sección
         }
@@ -146,9 +141,6 @@ return(
             </MapView>
         </View>
         {
-          // zona de sección
-        }
-        {
           // Zona de ventana modal
         }
         <View style={styles.button} >
@@ -158,9 +150,6 @@ return(
                             onPress={onButtonClick}
                     />                   
         </View>
-        {
-          // zona de sección
-        }
         {
           // Zona de ventana modal
         }
@@ -179,6 +168,7 @@ return(
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {setModalVisible(!modalVisible);}}
+            onShow={getEntitiesApi}
         >
           <View style={styles.modal_centeredView}>
             <View style={styles.modal_options}>

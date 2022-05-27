@@ -31,7 +31,6 @@ const Tarjeta = ({item, onClickCeder, onClickDelete, datas, token}) =>{
           ...json
         }
         setExtradata(json.data);
-        console.log("turno atendido: ", rest.data.inAttention, extradata.inAttention, json, item.placeNo);
         if (rest.data.inAttention >= item.placeNo){
             if (rest.data.inAttention === item.placeNo){
               setEstado(1);

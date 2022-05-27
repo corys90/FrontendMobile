@@ -10,8 +10,6 @@ const Place = ({navigation, route})=>{
     const [data, setData] = useState([]); 
     const [cancel, setCancel] = useState(false);
 
-    //console.log("Place route.params.turno: ", route.params.turno);
-
       useEffect(() => {
           async function getPlaceApi(parm) {
               const options = {
@@ -22,11 +20,9 @@ const Place = ({navigation, route})=>{
                 },
                 body: JSON.stringify(parm)
               }
-              console.log("Options de line: ", options);
               await fetch(`${UriBack}/api/line/`, options)
               .then((res) => res.json())
               .then((json) => {
-                console.log("Place recibde de line: ", json);
                  if (json.turno.status === 201){
                     //setExtradata({aveDelay: json.turno.data.averageDelay, inAtt:json.turno.data.inAttention});
                     const turno = {
